@@ -56,6 +56,7 @@ private var counter = mutableStateOf(0)
 
 @Composable
 fun CounterNumber() {
+    /*STATE: */
     var count by remember { counter }
 
     Text(
@@ -68,6 +69,7 @@ fun CounterNumber() {
 
 @Composable
 fun MyButton() {
+    /*STATE: */
     var btnState by remember { mutableStateOf(true) }
     Button(
         onClick = {
@@ -94,3 +96,6 @@ fun DefaultPreview() {
         Greeting("Android")
     }
 }
+
+/*
+* Recomposition: the mechanism in which state changes are reflected within an app's UI.*/
