@@ -1,101 +1,107 @@
 package com.example.myfirstjetpackcomposeproject
 
 import android.os.Bundle
-import android.webkit.WebSettings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myfirstjetpackcomposeproject.ui.theme.MyFirstJetpackComposeProjectTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-//            MyButton()
 
             Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
             ) {
-                CounterNumber()
+
+                AndroidItem(
+                    "title",
+                    "desc",
+                    painterResource(id = R.drawable.download),
+                    "365"
+                )
+
+                AndroidItem(
+                    "title2",
+                    "desc2",
+                    painterResource(id = R.drawable.learnandroiddevelopment),
+                    "3652"
+                )
 
 
+                AndroidItem(
+                    "title3",
+                    "desc3",
+                    painterResource(id = R.drawable.download),
+                    "3653"
+                )
 
-                Row() {
-
-                    Button(onClick = { counter.value++ }, modifier = Modifier.padding(8.dp))
-                    { Text("Increase") }
-
-                    Button(onClick = { counter.value-- }, modifier = Modifier.padding(8.dp))
-                    { Text("decrease") }
-                }
+                AndroidItem(
+                    "title4",
+                    "desc4",
+                    painterResource(id = R.drawable.learnandroiddevelopment),
+                    "3654"
+                )
 
             }
+        }
+    }
 
+
+    @Composable
+    fun AndroidItem(title: String, desc: String, image: Painter, price: String) {
+        Column() {
+            Image(
+                painter = image,
+                contentDescription = "",
+                contentScale = ContentScale.FillBounds,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+            )
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp,
+                    modifier = Modifier.padding(start = 8.dp, top = 8.dp)
+                )
+
+                Text(
+                    text = price,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Magenta,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+
+            Text(
+                text = desc,
+                fontSize = 20.sp,
+                modifier = Modifier.padding(start = 8.dp, bottom = 32.dp, top = 4.dp)
+            )
         }
     }
 }
-
-private var counter = mutableStateOf(0)
-
-@Composable
-fun CounterNumber() {
-    /*STATE: */
-    var count by remember { counter }
-
-    Text(
-        text = count.toString(),
-        modifier = Modifier.padding(16.dp),
-        fontSize = 50.sp,
-        fontWeight = FontWeight.ExtraBold
-    )
-}
-
-@Composable
-fun MyButton() {
-    /*STATE: */
-    var btnState by remember { mutableStateOf(true) }
-    Button(
-        onClick = {
-            btnState = !btnState
-        },
-        modifier = Modifier
-            .size(140.dp)
-            .padding(16.dp)
-    ) {
-        Text(text = btnState.toString())
-    }
-}
-
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MyFirstJetpackComposeProjectTheme {
-        Greeting("Android")
-    }
-}
-
-/*
-* Recomposition: the mechanism in which state changes are reflected within an app's UI.*/
