@@ -6,9 +6,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -23,46 +26,50 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
+                Modifier
+                    .padding(22.dp)
+                    .fillMaxWidth(0.5f)
             ) {
-
-                AndroidItem(
-                    "title",
-                    "desc",
-                    painterResource(id = R.drawable.download),
-                    "365"
-                )
-
-                AndroidItem(
-                    "title2",
-                    "desc2",
-                    painterResource(id = R.drawable.learnandroiddevelopment),
-                    "3652"
-                )
-
-
-                AndroidItem(
-                    "title3",
-                    "desc3",
-                    painterResource(id = R.drawable.download),
-                    "3653"
-                )
-
-                AndroidItem(
-                    "title4",
-                    "desc4",
-                    painterResource(id = R.drawable.learnandroiddevelopment),
-                    "3654"
-                )
-
+                cardView("mamad", "185$", painterResource(id = R.drawable.downloadd))
             }
         }
     }
 
+
+    @Composable
+    fun cardView(title: String, price: String, image: Painter) {
+        Card(modifier = Modifier.fillMaxWidth(), elevation = 16.dp, shape = RoundedCornerShape(20.dp)) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Image(
+                    painter = image,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .height(180.dp)
+                        .fillMaxSize()
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = title,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp
+                    )
+
+                    Text(
+                        text = price,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        color = Color.Red
+                    )
+
+                }
+            }
+        }
+    }
 
     @Composable
     fun AndroidItem(title: String, desc: String, image: Painter, price: String) {
