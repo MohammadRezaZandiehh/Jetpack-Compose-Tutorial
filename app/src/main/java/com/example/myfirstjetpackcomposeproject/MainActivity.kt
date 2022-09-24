@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
@@ -14,13 +15,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.net.CookieHandler
@@ -31,11 +35,33 @@ class MainActivity : ComponentActivity() {
         setContent {
             Column(
                 Modifier
-                    .padding(22.dp)
-                    .fillMaxWidth(0.5f)
+                    .padding(16.dp)
+                    .fillMaxWidth()
             ) {
-                BoxCard("mamad", "185$", painterResource(id = R.drawable.downloadd))
+                ShapeGenerator(
+                    shape = CircleShape,
+                    color = Color.Red,
+                    width = 190.dp,
+                    height = 190.dp,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentWidth(Alignment.CenterHorizontally)
+                        .wrapContentHeight(Alignment.CenterVertically)
+                )
             }
+        }
+    }
+
+
+    @Composable
+    fun ShapeGenerator(shape: Shape, color: Color, width: Dp, height: Dp, modifier: Modifier) {
+        Column(modifier) {
+            Box(
+                modifier = Modifier
+                    .clip(shape)
+                    .size(width, height)
+                    .background(color)
+            )
         }
     }
 
