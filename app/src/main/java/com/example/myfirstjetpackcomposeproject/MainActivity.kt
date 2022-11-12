@@ -1,14 +1,17 @@
 package com.example.myfirstjetpackcomposeproject
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +22,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -32,18 +36,52 @@ class MainActivity : ComponentActivity() {
             Column(
                 modifier = Modifier
                     .padding(22.dp)
-                    .fillMaxSize(),
+                    .fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
 
             ) {
                 CircleImageView(
                     painterResource(id = R.drawable.downloadd),
-                    size = 180.dp
+                    180.dp
                 )
+
+                MyEditText()
             }
         }
     }
+
+
+    @Composable
+    fun MyEditText() {
+
+        //build state for changing inputText:
+        var textState by remember {
+            mutableStateOf(TextFieldValue("agha"))
+        }
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            TextField(
+                value = textState,
+                onValueChange = {
+                    textState = it
+                }
+            )
+            Text(text = "your text is: ${textState.text}")
+
+            Button(
+                modifier = Modifier.padding(16.dp),
+                onClick = {
+                    Log.e("3636", textState.text)
+                }
+            ) {
+                Text(text = "print")
+            }
+        }
+    }
+
 
     @Composable
     fun CircleImageView(painter: Painter, size: Dp) {
