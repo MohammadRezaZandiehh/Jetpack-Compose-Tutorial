@@ -30,10 +30,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Column(
-                Modifier
+                modifier = Modifier
                     .padding(22.dp)
-                    .fillMaxWidth(),
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
+
             ) {
                 CircleImageView(
                     painterResource(id = R.drawable.downloadd),
@@ -52,7 +54,6 @@ class MainActivity : ComponentActivity() {
                 .clip(CircleShape)
 //                .clip(RectangleShape)
                 .size(size)
-
                 .border(
                     width = 6.dp,
                     color = Color.Green,
