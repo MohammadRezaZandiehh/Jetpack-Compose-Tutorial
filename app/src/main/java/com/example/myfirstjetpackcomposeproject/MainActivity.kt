@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.example.myfirstjetpackcomposeproject.ui.theme.Purple200
 import com.example.myfirstjetpackcomposeproject.ui.theme.Purple500
 import java.net.CookieHandler
+import kotlin.system.exitProcess
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,13 +52,58 @@ class MainActivity : ComponentActivity() {
                     180.dp
                 )
                 MyEditText()
+
+                ExitAlertDialog()
             }
         }
     }
 
+    val openDialogState = mutableStateOf(false)
+
+    @Composable
+    fun ExitAlertDialog() {
+        MaterialTheme {
+            val openDialog = remember {
+                openDialogState
+            }
+
+            if (openDialog.value) {
+                AlertDialog(
+                    onDismissRequest = {
+                        openDialog.value = false
+                    },                                  //onDismissRequest: if we click out of alertDialog
+                    title = {
+                        Text(text = "Exit App")
+                    },
+                    text = {
+                        Text(text = "Are you sure to exit app?")
+                    },
+                    confirmButton = {
+                        Button(onClick = {
+                            openDialogState.value = false
+                            Log.e("3636", "OK")
+                            exitProcess(0)         /*exitProcess: exit app*/
+                        }) {
+                            Text(text = "ok")
+                        }
+                    },
+                    dismissButton = {
+                        Button(onClick = { openDialogState.value = false }) {
+                            Text(text = "cancel")
+                        }
+                    }
+                )
+            } else {
+
+            }
+
+        }
+    }
+
+
     @Composable
     fun MyTopAppBar() {
-        Column (modifier = Modifier.padding(0.dp, 0.dp,0.dp,22.dp)){
+        Column(modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 22.dp)) {
             TopAppBar(
                 elevation = 10.dp,
                 title = {
@@ -73,7 +119,7 @@ class MainActivity : ComponentActivity() {
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { openDialogState.value = true }) {
                         Icon(Icons.Filled.ArrowBack, null)
                     }
                 }
