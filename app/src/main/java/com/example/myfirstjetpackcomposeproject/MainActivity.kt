@@ -1,5 +1,6 @@
 package com.example.myfirstjetpackcomposeproject
 
+import android.inputmethodservice.Keyboard
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstjetpackcomposeproject.ui.theme.Purple500
+import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
 class MainActivity : ComponentActivity() {
@@ -48,10 +50,10 @@ class MainActivity : ComponentActivity() {
                 ) {
                     MyTopAppBar()
 
-                    CircleImageView(
-                        painterResource(id = R.drawable.downloadd),
-                        180.dp
-                    )
+                    /*         CircleImageView(
+                                 painterResource(id = R.drawable.downloadd),
+                                 180.dp
+                             )*/
                     MyEditText()
 
                     ExitAlertDialog()
@@ -184,208 +186,258 @@ class MainActivity : ComponentActivity() {
             }
             CheckBoxView()
 
-            Spacer(modifier = Modifier.height(25.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             RadioButtonView()
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            SwitchView()
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            CircularProgressIndicator(progress = 0.75f)
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            LinearProgressIndicator(modifier = Modifier.height(16.dp))
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            SeekBarView()
         }
     }
 
+
     @Composable
-    fun RadioButtonView() {
-        val radioOption = listOf("radio1", "radio2", "radio3")
-
-        val (selectedOption, onOptionSelected) = remember {
-            mutableStateOf(radioOption[0])
+    fun SeekBarView() {
+        var sliderPosition by remember {
+            mutableStateOf(0f)
         }
+        Column() {
+            Slider(
+                value = sliderPosition,
+                onValueChange = {
+                    sliderPosition = it
+                }
+            )
 
-        Row {
-            radioOption.forEach { text ->
-                Row(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .selectable(
-                            selected = text == selectedOption,
-                            onClick = {
-                                onOptionSelected(text)
-                                Log.e("3636", text)
-                            }
-                        )
-                ) {
-                    RadioButton(
+            Text(text = (sliderPosition * 100).roundToInt().toString())
+        }
+    }
+
+
+    @Composable
+    fun SwitchView() {
+        var checkState by remember {
+            mutableStateOf(true)
+        }
+        Switch(
+            checked = checkState,
+            onCheckedChange = {
+                checkState = it
+            }
+        )
+    }
+}
+
+
+@Composable
+fun RadioButtonView() {
+    val radioOption = listOf("radio1", "radio2", "radio3")
+
+    val (selectedOption, onOptionSelected) = remember {
+        mutableStateOf(radioOption[0])
+    }
+
+    Row {
+        radioOption.forEach { text ->
+            Row(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .selectable(
                         selected = text == selectedOption,
                         onClick = {
                             onOptionSelected(text)
                             Log.e("3636", text)
                         }
                     )
+            ) {
+                RadioButton(
+                    selected = text == selectedOption,
+                    onClick = {
+                        onOptionSelected(text)
+                        Log.e("3636", text)
+                    }
+                )
 
-                    Text(
-                        text = text,
-                        modifier = Modifier.padding(start = 12.dp)
-                    )
-                }
+                Text(
+                    text = text,
+                    modifier = Modifier.padding(start = 12.dp)
+                )
             }
         }
-
     }
 
-    @Composable
-    fun CheckBoxView() {
-        var checkState by remember {
-            mutableStateOf(true)
-        }
-        Checkbox(
-            checked = checkState,
-            onCheckedChange =
-            {
-                checkState = it
-            })
+}
+
+@Composable
+fun CheckBoxView() {
+    var checkState by remember {
+        mutableStateOf(true)
     }
+    Checkbox(
+        checked = checkState,
+        onCheckedChange =
+        {
+            checkState = it
+        })
+}
 
 
-    @Composable
-    fun CircleImageView(painter: Painter, size: Dp) {
-        Image(
-            painter = painter,
-            contentDescription = "circle image",
-            modifier = Modifier
-                .clip(CircleShape)
+@Composable
+fun CircleImageView(painter: Painter, size: Dp) {
+    Image(
+        painter = painter,
+        contentDescription = "circle image",
+        modifier = Modifier
+            .clip(CircleShape)
 //                .clip(RectangleShape)
-                .size(size)
-                .border(
-                    width = 6.dp,
-                    color = Color.Green,
-                    shape = CircleShape
+            .size(size)
+            .border(
+                width = 6.dp,
+                color = Color.Green,
+                shape = CircleShape
 //                    shape = RectangleShape
-                )
-        )
-    }
+            )
+    )
+}
 
-    @Composable
-    fun BoxCard(title: String, price: String, image: Painter) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = 16.dp,
-            shape = RoundedCornerShape(20.dp)
-        ) {
-            Box(modifier = Modifier.height(200.dp)) {
+@Composable
+fun BoxCard(title: String, price: String, image: Painter) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = 16.dp,
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Box(modifier = Modifier.height(200.dp)) {
 
-                Image(
-                    painter = image,
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize()
-                )
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            Brush.verticalGradient(
-                                colors = listOf(
-                                    Color.Transparent,
-                                    Color.Black
-                                )
-                            )
-                        )
-                )
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(8.dp),
-                    contentAlignment = Alignment.BottomStart
-                ) {
-                    Text(
-                        text = title,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        color = Color.White
-                    )
-
-                }
-            }
-        }
-    }
-
-
-    @Composable
-    fun CardView(title: String, price: String, image: Painter) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = 16.dp,
-            shape = RoundedCornerShape(20.dp)
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Image(
-                    painter = image,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .height(180.dp)
-                        .fillMaxSize()
-                )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = title,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
-                    )
-
-                    Text(
-                        text = price,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        color = Color.Red
-                    )
-
-                }
-            }
-        }
-    }
-
-    @Composable
-    fun AndroidItem(title: String, desc: String, image: Painter, price: String) {
-        Column() {
             Image(
                 painter = image,
-                contentDescription = "",
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
             )
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.Black
+                            )
+                        )
+                    )
+            )
 
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp),
+                contentAlignment = Alignment.BottomStart
+            ) {
                 Text(
                     text = title,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
-                    modifier = Modifier.padding(start = 8.dp, top = 8.dp)
+                    fontSize = 20.sp,
+                    color = Color.White
+                )
+
+            }
+        }
+    }
+}
+
+
+@Composable
+fun CardView(title: String, price: String, image: Painter) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = 16.dp,
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Image(
+                painter = image,
+                contentDescription = null,
+                modifier = Modifier
+                    .height(180.dp)
+                    .fillMaxSize()
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
                 )
 
                 Text(
                     text = price,
-                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Magenta,
-                    modifier = Modifier.padding(8.dp)
+                    fontSize = 18.sp,
+                    color = Color.Red
                 )
-            }
 
-            Text(
-                text = desc,
-                fontSize = 20.sp,
-                modifier = Modifier.padding(start = 8.dp, bottom = 32.dp, top = 4.dp)
-            )
+            }
         }
     }
+}
+
+@Composable
+fun AndroidItem(title: String, desc: String, image: Painter, price: String) {
+    Column() {
+        Image(
+            painter = image,
+            contentDescription = "",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+
+            Text(
+                text = title,
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp,
+                modifier = Modifier.padding(start = 8.dp, top = 8.dp)
+            )
+
+            Text(
+                text = price,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Magenta,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+
+        Text(
+            text = desc,
+            fontSize = 20.sp,
+            modifier = Modifier.padding(start = 8.dp, bottom = 32.dp, top = 4.dp)
+        )
+    }
+}
 
 /*    @Preview(showBackground = true)
     @Composable
@@ -397,4 +449,3 @@ class MainActivity : ComponentActivity() {
             )
         }
     }*/
-}
