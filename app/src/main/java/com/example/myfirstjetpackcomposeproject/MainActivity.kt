@@ -37,26 +37,42 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Column(
-                modifier = Modifier
-//                    .padding(0.dp, 22.dp, 22.dp, 22.dp)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
 
+            Surface(
+                shape = CircleShape,
+                modifier = Modifier.padding(16.dp),
+                elevation = 10.dp,
+                color = Color.LightGray,
+                contentColor = Color.Red
             ) {
-                MyTopAppBar()
+                Column(
+                    modifier = Modifier
+//                    .padding(0.dp, 22.dp, 22.dp, 22.dp)
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+/*                    verticalArrangement = Arrangement.Center,*/
+                    horizontalAlignment = Alignment.CenterHorizontally
 
-                CircleImageView(
-                    painterResource(id = R.drawable.downloadd),
-                    180.dp
-                )
-                MyEditText()
+                ) {
+                    MyTopAppBar()
 
-                ExitAlertDialog()
+                    CircleImageView(
+                        painterResource(id = R.drawable.downloadd),
+                        180.dp
+                    )
+                    MyEditText()
+
+                    ExitAlertDialog()
+                }
             }
+
+
         }
     }
+
+
+/*    @Composable
+    fun Surface */
 
     val openDialogState = mutableStateOf(false)
 
@@ -66,7 +82,6 @@ class MainActivity : ComponentActivity() {
             val openDialog = remember {
                 openDialogState
             }
-
             if (openDialog.value) {
                 AlertDialog(
                     onDismissRequest = {
@@ -103,7 +118,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun MyTopAppBar() {
-        Column(modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 22.dp)) {
+        Column(modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 16.dp)) {
             TopAppBar(
                 elevation = 10.dp,
                 title = {
