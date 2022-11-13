@@ -2,11 +2,11 @@ package com.example.myfirstjetpackcomposeproject
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.CheckBox
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -25,13 +25,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myfirstjetpackcomposeproject.ui.theme.Purple200
 import com.example.myfirstjetpackcomposeproject.ui.theme.Purple500
-import java.net.CookieHandler
 import kotlin.system.exitProcess
 
 class MainActivity : ComponentActivity() {
@@ -185,15 +182,55 @@ class MainActivity : ComponentActivity() {
             ) {
                 Text(text = "forget password? ")
             }
+            CheckBoxView()
 
-            CHeckBoxView()
+            Spacer(modifier = Modifier.height(25.dp))
 
+            RadioButtonView()
         }
     }
 
+    @Composable
+    fun RadioButtonView() {
+        val radioOption = listOf("radio1", "radio2", "radio3")
+
+        val (selectedOption, onOptionSelected) = remember {
+            mutableStateOf(radioOption[0])
+        }
+
+        Row {
+            radioOption.forEach { text ->
+                Row(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .selectable(
+                            selected = text == selectedOption,
+                            onClick = {
+                                onOptionSelected(text)
+                                Log.e("3636", text)
+                            }
+                        )
+                ) {
+                    RadioButton(
+                        selected = text == selectedOption,
+                        onClick = {
+                            onOptionSelected(text)
+                            Log.e("3636", text)
+                        }
+                    )
+
+                    Text(
+                        text = text,
+                        modifier = Modifier.padding(start = 12.dp)
+                    )
+                }
+            }
+        }
+
+    }
 
     @Composable
-    fun CHeckBoxView() {
+    fun CheckBoxView() {
         var checkState by remember {
             mutableStateOf(true)
         }
