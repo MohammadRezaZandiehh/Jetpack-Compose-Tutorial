@@ -8,10 +8,11 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.myfirstjetpackcomposeproject.ui.theme.Purple200
+import com.example.myfirstjetpackcomposeproject.ui.theme.Purple500
 import java.net.CookieHandler
 
 class MainActivity : ComponentActivity() {
@@ -35,22 +38,48 @@ class MainActivity : ComponentActivity() {
         setContent {
             Column(
                 modifier = Modifier
-                    .padding(22.dp)
+//                    .padding(0.dp, 22.dp, 22.dp, 22.dp)
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
 
             ) {
+                MyTopAppBar()
+
                 CircleImageView(
                     painterResource(id = R.drawable.downloadd),
                     180.dp
                 )
-
                 MyEditText()
             }
         }
     }
 
+    @Composable
+    fun MyTopAppBar() {
+        Column (modifier = Modifier.padding(0.dp, 0.dp,0.dp,22.dp)){
+            TopAppBar(
+                elevation = 10.dp,
+                title = {
+                    Text(text = "Agha Jamshid")
+                },
+                backgroundColor = Purple500,
+                actions = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Filled.Menu, null)
+                    }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Filled.Star, null)
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Filled.ArrowBack, null)
+                    }
+                }
+            )
+        }
+    }
 
     @Composable
     fun MyEditText() {
