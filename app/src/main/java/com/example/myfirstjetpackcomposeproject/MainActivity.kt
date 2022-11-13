@@ -2,6 +2,7 @@ package com.example.myfirstjetpackcomposeproject
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.CheckBox
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
@@ -38,13 +39,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            Surface(
-                shape = CircleShape,
-                modifier = Modifier.padding(16.dp),
-                elevation = 10.dp,
-                color = Color.LightGray,
-                contentColor = Color.Red
-            ) {
+            Surface() {
                 Column(
                     modifier = Modifier
 //                    .padding(0.dp, 22.dp, 22.dp, 22.dp)
@@ -153,23 +148,61 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TextField(
+            OutlinedTextField(
                 value = textState,
                 onValueChange = {
                     textState = it
                 }
             )
+
             Text(text = "your text is: ${textState.text}")
 
-            Button(
-                modifier = Modifier.padding(16.dp),
+
+            Row() {
+                Button(
+                    modifier = Modifier.padding(16.dp),
+                    onClick = {
+                        Log.e("3636", textState.text)
+                    }
+                ) {
+                    Text(text = "LogIn")
+                }
+
+                OutlinedButton(
+                    modifier = Modifier.padding(16.dp),
+                    onClick = {
+                        Log.e("3636", textState.text)
+                    }
+                ) {
+                    Text(text = "Register")
+                }
+            }
+
+            TextButton(
                 onClick = {
                     Log.e("3636", textState.text)
                 }
             ) {
-                Text(text = "print")
+                Text(text = "forget password? ")
             }
+
+            CHeckBoxView()
+
         }
+    }
+
+
+    @Composable
+    fun CHeckBoxView() {
+        var checkState by remember {
+            mutableStateOf(true)
+        }
+        Checkbox(
+            checked = checkState,
+            onCheckedChange =
+            {
+                checkState = it
+            })
     }
 
 
