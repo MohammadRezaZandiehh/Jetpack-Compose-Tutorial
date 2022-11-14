@@ -38,26 +38,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            Surface() {
-                Column(
-                    modifier = Modifier
-//                    .padding(0.dp, 22.dp, 22.dp, 22.dp)
-                        .fillMaxWidth()
-                        .fillMaxHeight(),
-/*                    verticalArrangement = Arrangement.Center,*/
-                    horizontalAlignment = Alignment.CenterHorizontally
-
-                ) {
-                    MyTopAppBar()
-
-                    /*         CircleImageView(
-                                 painterResource(id = R.drawable.downloadd),
-                                 180.dp
-                             )*/
-                    MyEditText()
-
-                    ExitAlertDialog()
-                }
+            Surface {
+                ScaffoldView()
             }
 
 
@@ -65,8 +47,39 @@ class MainActivity : ComponentActivity() {
     }
 
 
-/*    @Composable
-    fun Surface */
+    @Composable
+    fun ScaffoldView() {
+        Scaffold(
+            topBar = {
+                MyTopAppBar()
+            },
+            bottomBar = {
+                BottomAppBarView()
+            },
+            drawerContent = {
+                Text(text = "Hello drawer")
+            },
+            floatingActionButtonPosition = FabPosition.Center,
+            floatingActionButton = {
+                FloatingActionButton(onClick = { /*TODO*/ }) {
+                    Text(text = "Hi!")
+                }
+            },
+            content = {
+                Text(text = "Hello content")
+            }
+        )
+
+    }
+
+    @Composable
+    fun BottomAppBarView() {
+        BottomAppBar(
+            backgroundColor = Purple500
+        ) {
+            Text(text = "Bottom Appbar View")
+        }
+    }
 
     val openDialogState = mutableStateOf(false)
 
@@ -184,27 +197,6 @@ class MainActivity : ComponentActivity() {
             ) {
                 Text(text = "forget password? ")
             }
-            CheckBoxView()
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            RadioButtonView()
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            SwitchView()
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            CircularProgressIndicator(progress = 0.75f)
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            LinearProgressIndicator(modifier = Modifier.height(16.dp))
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            SeekBarView()
         }
     }
 
