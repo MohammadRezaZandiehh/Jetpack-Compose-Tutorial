@@ -7,6 +7,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -53,7 +55,7 @@ class MainActivity : ComponentActivity() {
                 drawerContent = {
                     Text(text = "Hello drawer")
                 },
-                floatingActionButtonPosition = FabPosition.Center,
+                floatingActionButtonPosition = FabPosition.End,
                 floatingActionButton = {
                     FloatingActionButton(onClick = {
                         scope.launch {
@@ -64,35 +66,98 @@ class MainActivity : ComponentActivity() {
                     }
                 },
                 content = {
-                    Surface {
-                        var textState by remember {
-                            mutableStateOf("")
-                        }
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        LazyColumn() {
 
-                        Column() {
-                            OutlinedTextField(
-                                value = textState,
-                                onValueChange = {
-                                    textState = it
-                                }
-                            )
-                            OutlinedButton(
-                                onClick = {
-                                    scope.launch {
-                                        scaffoldState.snackbarHostState.showSnackbar(textState)
-                                    }
-                                }) {
-                                Text(text = "Click me!")
+                            itemsIndexed(
+                                listOf(
+                                    "Bitcoin",
+                                    "Ethereum",
+                                    "1000SHIB",
+                                    "Tron",
+                                    "Dogcoin"
+                                )
+                            ) { index, text ->
+                                WalletItem(name = text)
                             }
+
+                            /*    items(200) {
+                                    WalletItem("Bitcoin$it")
+                                }*/
                         }
-
-
                     }
                 })
         }
     }
 }
 
+
+@Composable
+fun WalletItem(name: String) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
+        elevation = 8.dp,
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .weight(0.15f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircleImageView(painter = painterResource(id = R.drawable.downloadd), size = 32.dp)
+            }
+
+            Column(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .weight(0.475f)
+            ) {
+                Text(
+                    text = "Bitcoin",
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )
+
+                Text(
+                    text = "BTC/USD",
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    color = Color.Gray
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .padding(top = 8.dp, bottom = 8.dp, end = 16.dp)
+                    .weight(0.475f),
+                horizontalAlignment = Alignment.End
+            ) {
+                Text(
+                    text = "BTC 0.0654",
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 17.sp
+                )
+
+                Text(
+                    text = "Bitcoin",
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0XFF299C0D)
+                )
+            }
+        }
+    }
+}
 
 @Composable
 fun BottomAppBarView() {
@@ -317,12 +382,12 @@ fun CircleImageView(painter: Painter, size: Dp) {
             .clip(CircleShape)
 //                .clip(RectangleShape)
             .size(size)
-            .border(
+/*            .border(
                 width = 6.dp,
                 color = Color.Green,
                 shape = CircleShape
 //                    shape = RectangleShape
-            )
+            )*/
     )
 }
 
