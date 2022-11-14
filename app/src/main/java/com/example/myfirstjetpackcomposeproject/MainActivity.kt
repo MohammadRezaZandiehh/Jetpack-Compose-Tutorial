@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstjetpackcomposeproject.ui.theme.Purple500
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
@@ -38,199 +39,219 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            Surface {
-                ScaffoldView()
-            }
+            val scaffoldState = rememberScaffoldState()       // save state of scafold here
+            val scope = rememberCoroutineScope()
+
+            Scaffold(
+                scaffoldState = scaffoldState,               // related to top comment
+                topBar = {
+                    MyTopAppBar()
+                },
+                bottomBar = {
+                    BottomAppBarView()
+                },
+                drawerContent = {
+                    Text(text = "Hello drawer")
+                },
+                floatingActionButtonPosition = FabPosition.Center,
+                floatingActionButton = {
+                    FloatingActionButton(onClick = {
+                        scope.launch {
+                            scaffoldState.snackbarHostState.showSnackbar("Hello")
+                        }
+                    }) {
+                        Text(text = "Hi!")
+                    }
+                },
+                content = {
+                    Surface {
+                        var textState by remember {
+                            mutableStateOf("")
+                        }
+
+                        Column() {
+                            OutlinedTextField(
+                                value = textState,
+                                onValueChange = {
+                                    textState = it
+                                }
+                            )
+                            OutlinedButton(
+                                onClick = {
+                                    scope.launch {
+                                        scaffoldState.snackbarHostState.showSnackbar(textState)
+                                    }
+                                }) {
+                                Text(text = "Click me!")
+                            }
+                        }
 
 
+                    }
+                })
         }
     }
+}
 
 
-    @Composable
-    fun ScaffoldView() {
-        Scaffold(
-            topBar = {
-                MyTopAppBar()
+@Composable
+fun BottomAppBarView() {
+    BottomAppBar(
+        backgroundColor = Purple500
+    ) {
+        Text(text = "Bottom Appbar View")
+    }
+}
+
+val openDialogState = mutableStateOf(false)
+
+@Composable
+fun ExitAlertDialog() {
+    MaterialTheme {
+        val openDialog = remember {
+            openDialogState
+        }
+        if (openDialog.value) {
+            AlertDialog(
+                onDismissRequest = {
+                    openDialog.value = false
+                },                                  //onDismissRequest: if we click out of alertDialog
+                title = {
+                    Text(text = "Exit App")
+                },
+                text = {
+                    Text(text = "Are you sure to exit app?")
+                },
+                confirmButton = {
+                    Button(onClick = {
+                        openDialogState.value = false
+                        Log.e("3636", "OK")
+                        exitProcess(0)         /*exitProcess: exit app*/
+                    }) {
+                        Text(text = "ok")
+                    }
+                },
+                dismissButton = {
+                    Button(onClick = { openDialogState.value = false }) {
+                        Text(text = "cancel")
+                    }
+                }
+            )
+        } else {
+
+        }
+
+    }
+}
+
+
+@Composable
+fun MyTopAppBar() {
+    Column(/*modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 16.dp)*/) {
+        TopAppBar(
+            elevation = 10.dp,
+            title = {
+                Text(text = "Agha Jamshid")
             },
-            bottomBar = {
-                BottomAppBarView()
-            },
-            drawerContent = {
-                Text(text = "Hello drawer")
-            },
-            floatingActionButtonPosition = FabPosition.Center,
-            floatingActionButton = {
-                FloatingActionButton(onClick = { /*TODO*/ }) {
-                    Text(text = "Hi!")
+            backgroundColor = Purple500,
+            actions = {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(Icons.Filled.Menu, null)
+                }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(Icons.Filled.Star, null)
                 }
             },
-            content = {
-                Text(text = "Hello content")
+            navigationIcon = {
+                IconButton(onClick = { openDialogState.value = true }) {
+                    Icon(Icons.Filled.ArrowBack, null)
+                }
+            }
+        )
+    }
+}
+
+@Composable
+fun MyEditText() {
+
+    //build state for changing inputText:
+    var textState by remember {
+        mutableStateOf(TextFieldValue("agha"))
+    }
+    Column(
+        modifier = Modifier.padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        OutlinedTextField(
+            value = textState,
+            onValueChange = {
+                textState = it
             }
         )
 
-    }
-
-    @Composable
-    fun BottomAppBarView() {
-        BottomAppBar(
-            backgroundColor = Purple500
-        ) {
-            Text(text = "Bottom Appbar View")
-        }
-    }
-
-    val openDialogState = mutableStateOf(false)
-
-    @Composable
-    fun ExitAlertDialog() {
-        MaterialTheme {
-            val openDialog = remember {
-                openDialogState
-            }
-            if (openDialog.value) {
-                AlertDialog(
-                    onDismissRequest = {
-                        openDialog.value = false
-                    },                                  //onDismissRequest: if we click out of alertDialog
-                    title = {
-                        Text(text = "Exit App")
-                    },
-                    text = {
-                        Text(text = "Are you sure to exit app?")
-                    },
-                    confirmButton = {
-                        Button(onClick = {
-                            openDialogState.value = false
-                            Log.e("3636", "OK")
-                            exitProcess(0)         /*exitProcess: exit app*/
-                        }) {
-                            Text(text = "ok")
-                        }
-                    },
-                    dismissButton = {
-                        Button(onClick = { openDialogState.value = false }) {
-                            Text(text = "cancel")
-                        }
-                    }
-                )
-            } else {
-
-            }
-
-        }
-    }
+        Text(text = "your text is: ${textState.text}")
 
 
-    @Composable
-    fun MyTopAppBar() {
-        Column(modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 16.dp)) {
-            TopAppBar(
-                elevation = 10.dp,
-                title = {
-                    Text(text = "Agha Jamshid")
-                },
-                backgroundColor = Purple500,
-                actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Filled.Menu, null)
-                    }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Filled.Star, null)
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = { openDialogState.value = true }) {
-                        Icon(Icons.Filled.ArrowBack, null)
-                    }
-                }
-            )
-        }
-    }
-
-    @Composable
-    fun MyEditText() {
-
-        //build state for changing inputText:
-        var textState by remember {
-            mutableStateOf(TextFieldValue("agha"))
-        }
-        Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            OutlinedTextField(
-                value = textState,
-                onValueChange = {
-                    textState = it
-                }
-            )
-
-            Text(text = "your text is: ${textState.text}")
-
-
-            Row() {
-                Button(
-                    modifier = Modifier.padding(16.dp),
-                    onClick = {
-                        Log.e("3636", textState.text)
-                    }
-                ) {
-                    Text(text = "LogIn")
-                }
-
-                OutlinedButton(
-                    modifier = Modifier.padding(16.dp),
-                    onClick = {
-                        Log.e("3636", textState.text)
-                    }
-                ) {
-                    Text(text = "Register")
-                }
-            }
-
-            TextButton(
+        Row() {
+            Button(
+                modifier = Modifier.padding(16.dp),
                 onClick = {
                     Log.e("3636", textState.text)
                 }
             ) {
-                Text(text = "forget password? ")
+                Text(text = "LogIn")
+            }
+
+            OutlinedButton(
+                modifier = Modifier.padding(16.dp),
+                onClick = {
+                    Log.e("3636", textState.text)
+                }
+            ) {
+                Text(text = "Register")
             }
         }
-    }
 
-
-    @Composable
-    fun SeekBarView() {
-        var sliderPosition by remember {
-            mutableStateOf(0f)
-        }
-        Column() {
-            Slider(
-                value = sliderPosition,
-                onValueChange = {
-                    sliderPosition = it
-                }
-            )
-
-            Text(text = (sliderPosition * 100).roundToInt().toString())
+        TextButton(
+            onClick = {
+                Log.e("3636", textState.text)
+            }
+        ) {
+            Text(text = "forget password? ")
         }
     }
+}
 
 
-    @Composable
-    fun SwitchView() {
-        var checkState by remember {
-            mutableStateOf(true)
-        }
-        Switch(
-            checked = checkState,
-            onCheckedChange = {
-                checkState = it
+@Composable
+fun SeekBarView() {
+    var sliderPosition by remember {
+        mutableStateOf(0f)
+    }
+    Column() {
+        Slider(
+            value = sliderPosition,
+            onValueChange = {
+                sliderPosition = it
             }
         )
+
+        Text(text = (sliderPosition * 100).roundToInt().toString())
     }
+}
+
+
+@Composable
+fun SwitchView() {
+    var checkState by remember {
+        mutableStateOf(true)
+    }
+    Switch(
+        checked = checkState,
+        onCheckedChange = {
+            checkState = it
+        }
+    )
 }
 
 
