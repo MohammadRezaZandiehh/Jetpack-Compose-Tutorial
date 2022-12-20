@@ -99,3 +99,12 @@ fun DefaultPreview() {
 
 /*
 * Recomposition: the mechanism in which state changes are reflected within an app's UI.*/
+
+/*
+* Recomposition ->  tarsime mojadade UI dar compose ; taghir dadne yek ghesmat az UI (ya yek composable function) ba dade haye jadid ro migim Recomposition
+va ya agar state UI ha taghir konan --> ma recomposition khahim dash.
+
+
+remember -> jetpack compose miad ba in akharin state i k UI dasht ro dar khodesh negah midare:
+masalan agar vase ye state ye meghdare avalie dar nazar gerefte bshim, dg pn khat ro ejra nmikone va khodesh midone k akharin state on UI chi bod .
+* */
