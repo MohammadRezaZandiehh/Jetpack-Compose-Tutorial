@@ -90,9 +90,9 @@ class MainActivity : ComponentActivity() {
                                 ) { index, item ->
                                     CardView(
                                         title = item,
-                                        price = "${100*index}",
+                                        price = "${100 * index}",
                                         image = painterResource(
-                                            id = R.drawable.download
+                                            id = R.drawable.downloadd
                                         )
                                     )
                                 }
@@ -459,12 +459,17 @@ fun BoxCard(title: String, price: String, image: Painter) {
 fun CardView(title: String, price: String, image: Painter) {
     Card(
         modifier = Modifier
-            .width(170.dp)
+            .fillMaxWidth()
             .padding(8.dp),
         elevation = 16.dp,
         shape = RoundedCornerShape(20.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .width(130.dp)
+                .height(160.dp)
+        ) {
             Image(
                 painter = image,
                 contentDescription = null,
