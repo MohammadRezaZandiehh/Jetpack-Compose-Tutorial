@@ -12,9 +12,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -178,7 +176,57 @@ fun BottomAppBarView() {
     BottomAppBar(
         backgroundColor = Purple500
     ) {
-        Text(text = "Bottom Appbar View")
+        BottomNavigationItem(
+            selected = true,
+            onClick = {
+
+            },
+            label = {
+                Text(text = "Home")
+            },
+            icon = {
+                Icon(Icons.Filled.Home, contentDescription = "")
+            }
+        )
+
+        BottomNavigationItem(
+            selected = false,
+            onClick = {
+
+            },
+            label = {
+                Text(text = "Setting")
+            },
+            icon = {
+                Icon(Icons.Filled.Settings, contentDescription = "")
+            }
+        )
+
+        BottomNavigationItem(
+            selected = false,
+            onClick = {
+
+            },
+            label = {
+                Text(text = "Profile")
+            },
+            icon = {
+                Icon(Icons.Filled.Info, contentDescription = "")
+            }
+        )
+
+        BottomNavigationItem(
+            selected = false,
+            onClick = {
+
+            },
+            label = {
+                Text(text = "Menu")
+            },
+            icon = {
+                Icon(Icons.Filled.Menu, contentDescription = "")
+            }
+        )
     }
 }
 
