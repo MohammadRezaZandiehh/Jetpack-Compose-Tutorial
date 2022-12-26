@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
@@ -20,6 +21,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -69,24 +71,34 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                     ) {
-                        LazyColumn() {
-
-                            itemsIndexed(
-                                listOf(
-                                    "Bitcoin",
-                                    "Ethereum",
-                                    "1000SHIB",
-                                    "Tron",
-                                    "Dogcoin"
-                                )
-                            ) { index, text ->
-                                WalletItem(name = text)
+                        Column {
+                            Text(text = "Best Price", modifier = Modifier.padding(16.dp))
+                            LazyRow {
+                                items(450) {
+                                    BoxCard(
+                                        title = "title$it", price = "", image = painterResource(
+                                            id = R.drawable.downloadd
+                                        )
+                                    )
+                                }
                             }
 
-                            /*    items(200) {
-                                    WalletItem("Bitcoin$it")
-                                }*/
+                            Text(text = "Best Store", modifier = Modifier.padding(16.dp))
+                            LazyRow {
+                                itemsIndexed(
+                                    listOf("red bag", "rich bag", "bag")
+                                ) { index, item ->
+                                    CardView(
+                                        title = item,
+                                        price = "${100*index}",
+                                        image = painterResource(
+                                            id = R.drawable.download
+                                        )
+                                    )
+                                }
+                            }
                         }
+
                     }
                 })
         }
@@ -393,11 +405,17 @@ fun CircleImageView(painter: Painter, size: Dp) {
 @Composable
 fun BoxCard(title: String, price: String, image: Painter) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
         elevation = 16.dp,
         shape = RoundedCornerShape(20.dp)
     ) {
-        Box(modifier = Modifier.height(200.dp)) {
+        Box(
+            modifier = Modifier
+                .height(180.dp)
+                .width(150.dp)
+        ) {
 
             Image(
                 painter = image,
@@ -440,7 +458,9 @@ fun BoxCard(title: String, price: String, image: Painter) {
 @Composable
 fun CardView(title: String, price: String, image: Painter) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .width(170.dp)
+            .padding(8.dp),
         elevation = 16.dp,
         shape = RoundedCornerShape(20.dp)
     ) {
