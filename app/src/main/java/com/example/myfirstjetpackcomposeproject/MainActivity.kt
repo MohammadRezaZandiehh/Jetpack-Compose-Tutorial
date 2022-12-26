@@ -1,6 +1,5 @@
 package com.example.myfirstjetpackcomposeproject
 
-import android.inputmethodservice.Keyboard
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -122,7 +121,7 @@ fun WalletItem(name: String) {
                     .weight(0.475f)
             ) {
                 Text(
-                    text = "Bitcoin",
+                    text = name,
                     modifier = Modifier.padding(bottom = 8.dp),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
