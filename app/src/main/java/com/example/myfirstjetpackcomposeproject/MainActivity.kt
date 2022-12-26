@@ -34,13 +34,15 @@ import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalFoundationApi::class)
+
+    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
 
             val scaffoldState = rememberScaffoldState()       // save state of scafold here
             val scope = rememberCoroutineScope()
+            val modalState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
 
             Scaffold(
                 scaffoldState = scaffoldState,               // related to top comment
@@ -57,7 +59,8 @@ class MainActivity : ComponentActivity() {
                 floatingActionButton = {
                     FloatingActionButton(onClick = {
                         scope.launch {
-                            scaffoldState.snackbarHostState.showSnackbar("Hello")
+//                            scaffoldState.snackbarHostState.showSnackbar("Hello")
+                            modalState.show()
                         }
                     }) {
                         Text(text = "Hi!")
@@ -68,38 +71,19 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                     ) {
-                        Column {
-                            Text(text = "Best Price", modifier = Modifier.padding(16.dp))
-                            LazyVerticalGrid(
-                                cells = GridCells.Adaptive(150.dp),
-                                contentPadding = PaddingValues(4.dp),
-                                content = {
-                                    items(100) {
-                                        BoxCard(
-                                            title = "title$it", price = "", image = painterResource(
-                                                id = R.drawable.downloadd
-                                            )
-                                        )
+                        ModalBottomSheetLayout(
+                            sheetState = modalState,
+                            sheetContent = {
+                                LazyColumn(
+                                    modifier = Modifier.padding(bottom = 60.dp)
+                                ) {
+                                    items(51) {
+                                        WalletItem(name = "Bitcoin$it")
                                     }
                                 }
-                            )
+                            }) {
 
-/*                            Text(text = "Best Store", modifier = Modifier.padding(16.dp))
-                            LazyRow {
-                                itemsIndexed(
-                                    listOf("red bag", "rich bag", "bag")
-                                ) { index, item ->
-                                    CardView(
-                                        title = item,
-                                        price = "${100 * index}",
-                                        image = painterResource(
-                                            id = R.drawable.downloadd
-                                        )
-                                    )
-                                }
-                            }*/
                         }
-
                     }
                 })
         }
