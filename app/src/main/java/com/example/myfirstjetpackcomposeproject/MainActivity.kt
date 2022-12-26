@@ -1,6 +1,5 @@
 package com.example.myfirstjetpackcomposeproject
 
-import android.inputmethodservice.Keyboard
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -23,7 +22,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
@@ -44,6 +42,16 @@ class MainActivity : ComponentActivity() {
 
             Scaffold(
                 scaffoldState = scaffoldState,               // related to top comment
+                /*
+                * ma dar bala "val scaffoldState = rememberScaffoldState()" ro neveshtim va dar khate balaei daroon e
+                * scaffold state ro pass dadim vas khatere inke kollan baraye estefade az "Snackbar" ma niaz darim b
+                * state e Scaffold (b snackbarHostState m niaz darim k daroon e scaffoldState e ) hamoontor k dar ghesmate content dar paein azash use kardim.*/
+
+                /*
+                * baraye neshon dadan e snackbar ma niaz darim b neveshtane khate "val scope = rememberCoroutineScope()" */
+
+                /*
+                * baraye inke vaghti snackbar show mishe poshte keyboard nare dar manifest az "android:windowSoftInputMode="adjustResize"" use kardim.*/
                 topBar = {
                     MyTopAppBar()
                 },
@@ -69,7 +77,7 @@ class MainActivity : ComponentActivity() {
                             mutableStateOf("")
                         }
 
-                        Column() {
+                        Column {
                             OutlinedTextField(
                                 value = textState,
                                 onValueChange = {
@@ -85,8 +93,6 @@ class MainActivity : ComponentActivity() {
                                 Text(text = "Click me!")
                             }
                         }
-
-
                     }
                 })
         }
