@@ -22,12 +22,19 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ChainStyle
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
+import androidx.constraintlayout.compose.Dimension
 import com.example.myfirstjetpackcomposeproject.ui.theme.Purple500
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -67,23 +74,43 @@ class MainActivity : ComponentActivity() {
                     }
                 },
                 content = {
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxSize()
-                    ) {
-                        ModalBottomSheetLayout(
-                            sheetState = modalState,
-                            sheetContent = {
-                                LazyColumn(
-                                    modifier = Modifier.padding(bottom = 60.dp)
-                                ) {
-                                    items(51) {
-                                        WalletItem(name = "Bitcoin$it")
-                                    }
-                                }
-                            }) {
+                    val constraint = ConstraintSet {
+                        val greenBox = createRefFor("greenBox")
+                        val redBox = createRefFor("redBox")
+                        val guidLine = createGuidelineFromTop(0.5f)
+                        val rightGuidLine = createGuidelineFromEnd(0.1f)
+                        val leftGuidLine = createGuidelineFromStart(0.1f)
 
+                        constrain(greenBox) {
+//                            top.linkTo(parent.top)
+                            top.linkTo(guidLine)
+                            bottom.linkTo(guidLine)
+                            start.linkTo(leftGuidLine)
+                            width = Dimension.value(100.dp)
+                            height = Dimension.value(100.dp)
                         }
+
+                        constrain(redBox) {
+                            top.linkTo(greenBox.top)
+                            end.linkTo(rightGuidLine)
+//                            width = Dimension.matchParent
+                            width = Dimension.value(100.dp)
+                            height = Dimension.value(100.dp)
+                        }
+//                        createHorizontalChain(greenBox, redBox, chainStyle = ChainStyle.SpreadInside)
+                    }
+                    ConstraintLayout(constraint, modifier = Modifier.fillMaxSize()) {
+                        Box(
+                            modifier = Modifier
+                                .background(Color.Green)
+                                .layoutId("greenBox")
+                        )
+
+                        Box(
+                            modifier = Modifier
+                                .background(Color.Red)
+                                .layoutId("redBox")
+                        )
                     }
                 })
         }
