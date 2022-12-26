@@ -6,9 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,6 +36,7 @@ import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -73,17 +72,21 @@ class MainActivity : ComponentActivity() {
                     ) {
                         Column {
                             Text(text = "Best Price", modifier = Modifier.padding(16.dp))
-                            LazyRow {
-                                items(450) {
-                                    BoxCard(
-                                        title = "title$it", price = "", image = painterResource(
-                                            id = R.drawable.downloadd
+                            LazyVerticalGrid(
+                                cells = GridCells.Adaptive(150.dp),
+                                contentPadding = PaddingValues(4.dp),
+                                content = {
+                                    items(100) {
+                                        BoxCard(
+                                            title = "title$it", price = "", image = painterResource(
+                                                id = R.drawable.downloadd
+                                            )
                                         )
-                                    )
+                                    }
                                 }
-                            }
+                            )
 
-                            Text(text = "Best Store", modifier = Modifier.padding(16.dp))
+/*                            Text(text = "Best Store", modifier = Modifier.padding(16.dp))
                             LazyRow {
                                 itemsIndexed(
                                     listOf("red bag", "rich bag", "bag")
@@ -96,7 +99,7 @@ class MainActivity : ComponentActivity() {
                                         )
                                     )
                                 }
-                            }
+                            }*/
                         }
 
                     }
