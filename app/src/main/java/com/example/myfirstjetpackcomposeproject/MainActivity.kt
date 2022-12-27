@@ -35,6 +35,10 @@ import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.myfirstjetpackcomposeproject.ui.theme.Purple500
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -116,6 +120,17 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
+
+/*@Composable
+fun Loader() {
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading))
+    LottieAnimation(
+        composition,
+        iterations = LottieConstants.IterateForever
+    )
+}*/
 
 
 @Composable
