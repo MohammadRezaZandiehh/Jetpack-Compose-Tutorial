@@ -2,6 +2,12 @@ package com.example.myfirstjetpackcomposeproject
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
@@ -31,6 +37,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -74,11 +81,36 @@ class MainActivity : ComponentActivity() {
                     }
                 },
                 content = {
-//                    AnimateColor()
-//                    RotateAnimation()
-//                    InfiniteAnimation()
-//                    AnimateToDp()
-                    ExpandableCard()
+                    Column {
+                        AndroidView(
+                            modifier = Modifier.fillMaxWidth(),
+                            factory = {
+                                TextView(it)
+                            }
+                        ){
+                            textView->
+                            textView.apply {
+                                text = "Hello From Compose In XML"
+                                textSize = 20f
+                                gravity = Gravity.CENTER
+                            }
+                        }
+
+                        AndroidView(
+                            factory = {
+                                android.widget.Button(it)
+                            }
+                        ){
+                            btn->
+                            btn.apply {
+                                text = "My Button"
+                                layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                                setOnClickListener{
+
+                                }
+                            }
+                        }
+                    }
                 })
         }
     }
