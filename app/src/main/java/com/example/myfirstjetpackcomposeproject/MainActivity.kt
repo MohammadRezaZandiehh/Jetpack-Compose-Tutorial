@@ -121,7 +121,17 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/*@Composable
+fun AnimateColor() {
+    var isNeedColorChange by remember {
+        mutableStateOf(false)
+    }
+    var startColor = Color.RED
+    var endColor = Color.BLUE
+    val backgroundColor by animateColorAsState (
 
+            )
+}*/
 
 /*@Composable
 fun Loader() {
