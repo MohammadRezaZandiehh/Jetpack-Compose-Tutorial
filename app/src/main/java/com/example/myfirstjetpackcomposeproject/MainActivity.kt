@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,24 +18,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.layout
-import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ChainStyle
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.ConstraintSet
-import androidx.constraintlayout.compose.Dimension
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -78,69 +72,144 @@ class MainActivity : ComponentActivity() {
                     }
                 },
                 content = {
-                    val constraint = ConstraintSet {
-                        val greenBox = createRefFor("greenBox")
-                        val redBox = createRefFor("redBox")
-                        val guidLine = createGuidelineFromTop(0.5f)
-                        val rightGuidLine = createGuidelineFromEnd(0.1f)
-                        val leftGuidLine = createGuidelineFromStart(0.1f)
-
-                        constrain(greenBox) {
-//                            top.linkTo(parent.top)
-                            top.linkTo(guidLine)
-                            bottom.linkTo(guidLine)
-                            start.linkTo(leftGuidLine)
-                            width = Dimension.value(100.dp)
-                            height = Dimension.value(100.dp)
-                        }
-
-                        constrain(redBox) {
-                            top.linkTo(greenBox.top)
-                            end.linkTo(rightGuidLine)
-//                            width = Dimension.matchParent
-                            width = Dimension.value(100.dp)
-                            height = Dimension.value(100.dp)
-                        }
-//                        createHorizontalChain(greenBox, redBox, chainStyle = ChainStyle.SpreadInside)
-                    }
-                    ConstraintLayout(constraint, modifier = Modifier.fillMaxSize()) {
-                        Box(
-                            modifier = Modifier
-                                .background(Color.Green)
-                                .layoutId("greenBox")
-                        )
-
-                        Box(
-                            modifier = Modifier
-                                .background(Color.Red)
-                                .layoutId("redBox")
-                        )
-                    }
+//                    AnimateColor()
+//                    RotateAnimation()
+//                    InfiniteAnimation()
+                    AnimateToDp()
                 })
         }
     }
 }
 
-/*@Composable
+
+@Composable
+fun AnimateToDp() {
+    var sizeState by remember {
+        mutableStateOf(100.dp)
+    }
+
+    val size by animateDpAsState(
+        targetValue = sizeState,
+        tween(
+            durationMillis = 3000,
+            delayMillis = 1000
+        )
+    )
+    Column(
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.Bottom
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.downloadd),
+            contentDescription = "",
+            modifier = Modifier
+                .size(size)
+        )
+        Row(
+            Modifier.padding(top = 20.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(onClick = { sizeState += 50.dp }) {
+                Text(text = "Increase Image")
+            }
+
+            Button(onClick = { sizeState -= 50.dp }) {
+                Text(text = "Decrease Image")
+            }
+        }
+
+    }
+}
+
+
+@Composable
+fun InfiniteAnimation() {
+    val infiniteTransition = rememberInfiniteTransition()
+    val size by infiniteTransition.animateFloat(
+        initialValue = 100.0f,
+        targetValue = 150.0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(800, 100),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
+    Image(
+        painter = painterResource(id = R.drawable.downloadd),
+        contentDescription = "",
+        modifier = Modifier
+            .size(size.dp)
+    )
+}
+
+@Composable
+fun RotateAnimation() {
+    var isRotate by remember {
+        mutableStateOf(false)
+    }
+    val rotateAngle by animateFloatAsState(
+        targetValue = if (isRotate) 360f else 0f,
+        animationSpec = tween(durationMillis = 3000)
+    )
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.downloadd),
+            contentDescription = "",
+            modifier = Modifier
+                .rotate(rotateAngle)
+                .size(150.dp)
+        )
+
+        Button(onClick = { isRotate = !isRotate }) {
+            Text(text = "Rotate Image")
+        }
+    }
+}
+
+
+@Composable
 fun AnimateColor() {
     var isNeedColorChange by remember {
         mutableStateOf(false)
     }
-    var startColor = Color.RED
-    var endColor = Color.BLUE
-    val backgroundColor by animateColorAsState (
+    val startColor = Color.Red
+    val endColor = Color.Blue
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isNeedColorChange) endColor else startColor,
+        animationSpec = tween(
+            durationMillis = 5000,
+            delayMillis = 100
+        )                                           /*in animationSpec we specify how long does animation be determined, or what kind of delay? and how does it be played? */
+    )
 
-            )
-}*/
+    Column {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.7f)
+                .background(backgroundColor)
+        )
+        Button(
+            onClick = { isNeedColorChange = !isNeedColorChange }
+        ) {
+            Text(text = "change color")
+        }
+    }
+}
 
-/*@Composable
+@Composable
 fun Loader() {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading))
     LottieAnimation(
         composition,
         iterations = LottieConstants.IterateForever
     )
-}*/
+}
 
 
 @Composable
