@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
@@ -75,8 +77,73 @@ class MainActivity : ComponentActivity() {
 //                    AnimateColor()
 //                    RotateAnimation()
 //                    InfiniteAnimation()
-                    AnimateToDp()
+//                    AnimateToDp()
+                    ExpandableCard()
                 })
+        }
+    }
+}
+
+
+@ExperimentalMaterialApi
+@Composable
+fun ExpandableCard() {
+    var expandState by remember {
+        mutableStateOf(false)
+    }
+
+    val rotationState by animateFloatAsState(
+        targetValue = if (expandState) 180F else 0F
+    )
+
+    Card(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+            .animateContentSize(
+                animationSpec = tween(
+                    durationMillis = 300
+                )
+            ),
+        shape = RoundedCornerShape(9.dp),
+        onClick = {
+            expandState = !expandState
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.LightGray)
+                .padding(8.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "My Title",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )
+
+                IconButton(
+                    modifier = Modifier
+                        .alpha(ContentAlpha.medium)
+                        .rotate(rotationState),
+                    onClick = {
+                        expandState = !expandState
+                    }
+                ) {
+                    Icon(Icons.Filled.ArrowDropDown, contentDescription = "")
+                }
+            }
+            if (expandState) {
+                Text(
+                    text = "kjfhidfidfi;dshfihso;fh;shishiohil das das das das das d sad as das a f fr g reg re gre g reg re gre g erg brbvksdkjv jsdk vjsd vjksd kvjsd jkf sdjkflbv sh ghgjs gsjg sjgjsdfjs ghesgh ewhgweh gwe gjkwe gkewhjf wejkf ewk fjke fjles kjg ksj. gjskegjk.er giuwregiusgoslgjks g skig sefhsfisefeshilehfisasehfiehsfihewfefn efiehfies fsiofjislf is;fsf sdil;fjisd;f sd;fsdlf slfsdf osofhioeehfe fu ieuhfoeaf uea;hfuaef ioahfuahfiosdfh8s dofih si8f eofses feofoe8f eioaf f  fae fea ;fiehuse kjfhidfidfi;dshfihso;fh;shishiohil das das das das das d sad as das a f fr g reg re gre g reg re gre g erg brbvksdkjv jsdk vjsd vjksd kvjsd jkf sdjkflbv sh ghgjs gsjg sjgjsdfjs ghesgh ewhgweh gwe gjkwe gkewhjf wejkf ewk fjke fjles kjg ksj. gjskegjk.er giuwregiusgoslgjks g skig sefhsfisefeshilehfisasehfiehsfihewfefn efiehfies fsiofjislf is;fsf sdil;fjisd;f sd;fsdlf slfsdf osofhioeehfe fu ieuhfoeaf uea;hfuaef ioahfuahfiosdfh8s dofih si8f eofses feofoe8f eioaf f  fae fea ;fiehuse "
+                )
+            }
         }
     }
 }
