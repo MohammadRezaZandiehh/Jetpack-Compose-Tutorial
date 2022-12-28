@@ -78,6 +78,8 @@ class MainActivity : ComponentActivity() {
                     }
                 },
                 content = {
+                    Loader()
+
                     val constraint = ConstraintSet {
                         val greenBox = createRefFor("greenBox")
                         val redBox = createRefFor("redBox")
@@ -123,14 +125,14 @@ class MainActivity : ComponentActivity() {
 
 
 
-/*@Composable
+@Composable
 fun Loader() {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.loading))
     LottieAnimation(
         composition,
         iterations = LottieConstants.IterateForever
     )
-}*/
+}
 
 
 @Composable
