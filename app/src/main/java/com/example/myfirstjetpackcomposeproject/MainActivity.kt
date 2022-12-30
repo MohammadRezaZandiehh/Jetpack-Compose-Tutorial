@@ -2,12 +2,6 @@ package com.example.myfirstjetpackcomposeproject
 
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
@@ -37,12 +31,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.example.myfirstjetpackcomposeproject.ui.theme.Purple500
+import com.example.myfirstjetpackcomposeproject.ui.theme.*
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 import kotlin.system.exitProcess
@@ -76,38 +69,44 @@ class MainActivity : ComponentActivity() {
 //                            scaffoldState.snackbarHostState.showSnackbar("Hello")
                             modalState.show()
                         }
-                    }) {
+                    }, backgroundColor = CustomThemeManager.colors.floatingActionButtonColor) {
                         Text(text = "Hi!")
                     }
                 },
                 content = {
-                    Column {
-                        AndroidView(
-                            modifier = Modifier.fillMaxWidth(),
-                            factory = {
-                                TextView(it)
-                            }
-                        ){
-                            textView->
-                            textView.apply {
-                                text = "Hello From Compose In XML"
-                                textSize = 20f
-                                gravity = Gravity.CENTER
-                            }
-                        }
-
-                        AndroidView(
-                            factory = {
-                                android.widget.Button(it)
-                            }
-                        ){
-                            btn->
-                            btn.apply {
-                                text = "My Button"
-                                layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-                                setOnClickListener{
-
+                    MyFirstJetpackComposeProjectTheme {
+                        Surface(
+                            modifier = Modifier.fillMaxSize(),
+                            color = CustomThemeManager.colors.backgroundColor
+                        ) {
+                            Column {
+                                Button(
+                                    onClick = {
+                                        CustomThemeManager.customTheme =
+                                            if (CustomThemeManager.customTheme == CustomTheme.DARK)
+                                                CustomTheme.LIGHT
+                                            else CustomTheme.DARK
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = CustomThemeManager.colors.buttonBackgroundColor,
+                                        contentColor = CustomThemeManager.colors.buttonTextColor
+                                    )
+                                ) {
+                                    Text(text = "Change My Theme ...")
                                 }
+
+                                Spacer(modifier = Modifier.height(20.dp))
+
+                                Text(
+                                    color = CustomThemeManager.colors.textColor,
+                                    text = "Current theme is : ${
+                                        if (CustomThemeManager.isSystemInDarkTheme())
+                                            "DARK"
+                                        else
+                                            "LIGHT"
+                                    }"
+                                )
+
                             }
                         }
                     }
